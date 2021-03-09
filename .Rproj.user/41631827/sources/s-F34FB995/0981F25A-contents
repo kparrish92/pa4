@@ -166,7 +166,7 @@ fricatives_tidy = fricatives %>%
 
 
 fricatives_tidy %>% 
-  write.csv("./data_tidy/fricatives_tidy")
+  write.csv("../data_tidy/fricatives_tidy")
 
 fricatives_desc = fricatives %>% 
   pivot_longer(c(`s_cog`, `s_skewness`,`sh_cog`, `sh_skewness`), names_to = "type", values_to = "value") %>%
@@ -393,6 +393,10 @@ acf(model2$residuals)
 ```
 ---
 
+## Discussion
+
+Looks like the two models are both significant, but only one of them satisfies the model assumptions. 
+
 .tiny[
 ```{r}
 
@@ -403,3 +407,4 @@ cor.test(fricatives_s2$skewness, model2$residuals)
 ```
 ]
 ---
+
