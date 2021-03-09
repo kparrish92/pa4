@@ -1,0 +1,405 @@
+---
+title: "Programming Assignment 4"
+subtitle: "⚔<br/>with xaringan"
+author: "Kyle Parrish"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{css, echo = FALSE}
+.remark-slide-content {
+  font-size: 20px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 24px;
+}
+.huge .remark-code { /*Change made here*/
+  font-size: 200% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+
+
+```
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.height = 6, fig.width = 7)
+```
+
+```{r setup, include=FALSE}
+library(readr)
+library(openintro)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(e1071)
+library(sjPlot)
+library(sjmisc)
+library(sjlabelled)
+library("lawstat")
+library("ggfortify")
+library("lmtest")
+library("DataCombine")
+library("gvlma")
+library("tidyverse")
+library(xaringanthemer)
+library(showtext)
+
+```
+
+
+```{r load data, include = FALSE}
+
+fricatives <- read_csv("data_raw/fricatives.csv")
+
+```
+
+# PA4 
+
+--
+
+- This was an awesome assignment to tie everything together.
+
+--
+
+- This presentation will show you my experience of this PA. But first...
+
+--
+
+- You will look at a picture of my dogs. 
+
+--
+
+- This is **unavoidable.** 
+
+---
+
+# Olive, Kevin, and Phyllis. 
+![Majestic animals](assets/img/dawgs.jpg)
+
+
+---
+
+# Now we get started 
+
+Here is the general layout of this presentation. 
+
+--
+
+(1) Pondering how to tidy
+
+--
+
+(2) Descriptive statistics 
+
+--
+
+(3) Plots 
+
+--
+
+(4) Modeling 
+
+--
+
+(5) Checking Model Assumptions
+
+--
+
+(6) Written Summary 
+
+---
+
+# Pondering how to tidy 
+
+I am using the function `skewness` to see if this vector's data is skewed. A value between -0.5 and -1 suggest that it is moderately skewed, meaning that it does not follow a normal distribution. Joseph was being tricky.
+
+```{r, echo=FALSE}
+skewness(fricatives$s_cog)
+skewness(fricatives$s_skewness)
+skewness(fricatives$sh_cog)
+skewness(fricatives$sh_skewness)
+```
+
+---
+
+# Pondering how to tidy 
+
+But why might the data be skewed? Time to check out the data and see if this skewness actually matters.  
+
+---
+
+# Pondering how to tidy 
+
+First, we will eye-ball it. It looks like there is a linear relationship here, but there is at least a single point that might be an influential data point. 
+
+```{r, echo = FALSE, fig.height= 6, fig.width = 7}
+
+ggplot(data = fricatives, aes(x = s_cog, y = s_skewness)) + geom_point(color = "Steelblue3") + ggtitle("Eye-ball it graph: is there a linear relationship bewteen skewness and COG?") + xlab("Center of Gravity") + ylab("Skewness")
+
+```
+
+---
+
+
+# Descriptive Statistics 
+
+Here are some descriptive stats - after tidying, a dataframe showing the means and standard deviations of COG and skewness for /s/ and /ʃ/ was created. I saved the output of the tidy file and descriptive table under the `data_tidy` folder. 
+
+```{r, echo=FALSE, warning=FALSE, }
+
+fricatives_tidy = fricatives %>% 
+  pivot_longer(c(`s_cog`, `s_skewness`,`sh_cog`, `sh_skewness`), names_to = "type", values_to = "value") %>% 
+  separate(type, into = c("phoneme", "measure"), sep = "_") %>% 
+  pivot_wider(names_from = measure, values_from = value)
+
+
+fricatives_tidy %>% 
+  write.csv("./data_tidy/fricatives_tidy")
+
+fricatives_desc = fricatives %>% 
+  pivot_longer(c(`s_cog`, `s_skewness`,`sh_cog`, `sh_skewness`), names_to = "type", values_to = "value") %>%
+  separate(type, into = c("phoneme", "measure"), sep = "_") %>%
+  group_by(phoneme, measure) %>% 
+  summarise(mean = mean(value), sd = sd(value)) 
+
+fricatives_desc %>% 
+  write.csv("./data_tidy/fricatives_desc")
+
+
+knitr::kable(fricatives_desc, digits = 3)
+
+```
+---
+
+# Plots 
+
+Here is the box plot in all its beauty. 
+
+```{r, echo = FALSE, fig.height= 6, fig.width = 7}
+fricatives_tidy %>%
+  ggplot(., aes(x = phoneme, y = cog)) + geom_boxplot(fill = "deepskyblue3") + xlab("Phoneme") + ggtitle("COG as a function of phoneme") + ylab("Center of Gravity")
+
+```
+
+---
+
+# Plots
+
+Here is the other plot.
+
+```{r, echo = FALSE, fig.height= 6, fig.width = 7}
+
+fricatives_tidy %>%
+  ggplot(., aes(x = phoneme, y = skewness)) + stat_summary(fun.data = "mean_cl_boot") + geom_point(alpha = .3, color = "seagreen") + ggtitle("Skewness as a function of phoneme") + xlab("Skewness") + ylab("Phoneme")
+                                                                      
+```
+---
+
+# Modeling
+
+Now, I turn to modeling. This model is a bivariate regression which examines center of gravity as a function of skewness for the [s] segments.
+
+Hey, it looks like skewness is a predictor of cog (p = 7.69e-10), and explains quite a bit of variance (Multiple R-squared:  0.8836,	Adjusted R-squared:  0.8771). 
+
+.tiny[
+```{r}
+
+fricatives_s = fricatives_tidy %>% 
+  filter(phoneme == "s")
+
+
+model = lm(fricatives_s$cog ~ fricatives_s$skewness)
+
+summary(model)
+
+```
+]
+---
+
+# Modeling
+
+But... the residuals are suspicious. The mean of the residuals was `mean_model1`, and ought to be close to zero.
+
+.tiny[
+```{r}
+
+mean_model1 = mean(model$residuals)
+
+
+```
+]
+
+---
+
+# Modeling 
+--
+
+Oh no... the model does not satisfy the assumptions of the linear model! 
+
+--
+
+The `gvlma` function in R reveals that 5 assumptions of the linear model are **not** satisfied. 
+
+.tiny[
+```{r}
+
+gvlma::gvlma(model)
+
+```
+]
+
+---
+
+# Modeling 
+
+That point that I was suspicious of might be to blame. 
+
+--
+
+Looking at Cook's Distance might let us know whether individual data points have high **leverage**.
+
+--
+
+The higher the leverage, the more one data point influences the regression line relative to other data points. 
+
+--
+
+---
+
+# Modeling 
+
+--
+
+Looking at this graph of the leverage of each observation in this study suggests that there is not only one, but two influential data points, observations 1 and 20. 
+
+--
+
+```{r}
+
+x = cooks.distance(model)
+
+plot(x)
+
+```
+
+---
+
+# Checking Model Assumptions
+
+The residuals do not check out. Data point 20 is causing trouble everywhere. 
+
+```{r}
+autoplot(model)
+
+```
+
+---
+
+# Assumptions 
+
+.tiny[
+```{r}
+
+acf(model$residuals)
+
+```
+]
+---
+
+.tiny[
+```{r}
+
+fricatives_s2 = fricatives_s %>% 
+  filter(obs > 1 & obs < 20)
+
+model2 = lm(fricatives_s2$cog ~ fricatives_s2$skewness)
+
+summary(model2)
+```
+]
+---
+
+# Modeling
+
+--
+
+Now that we have a new model, let's look at the mean of the residuals again.
+
+--
+
+The mean of the residuals was `mean_model2`, and ought to be close to zero. 
+
+--
+
+That's pretty close to zero!
+
+.tiny[
+```{r}
+
+mean_model2 = mean(model2$residuals)
+
+tab_model(model, model2)
+
+```
+]
+---
+
+# Checking Model Assumptions
+
+These look much better than last time. 
+
+```{r}
+autoplot(model2)
+
+```
+
+---
+
+# Modeling 
+
+Let's see whether the model assumptions are now satisfied...
+
+--
+
+All 5 assumptions are now satisfied! 
+
+.tiny[
+```{r}
+
+gvlma::gvlma(model2)
+
+```
+]
+---
+
+
+
+```{r}
+
+acf(model2$residuals)
+
+```
+---
+
+.tiny[
+```{r}
+
+cor.test(fricatives_s$skewness, model$residuals)
+
+cor.test(fricatives_s2$skewness, model2$residuals)
+
+```
+]
+---

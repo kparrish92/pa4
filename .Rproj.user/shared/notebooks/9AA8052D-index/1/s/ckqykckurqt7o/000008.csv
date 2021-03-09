@@ -1,0 +1,3 @@
+"0",""
+"0","fricatives_zscores %>%"
+"0","  ggplot(., aes(x = phoneme, y = z_score_ungrouped_skew)) + stat_summary(fun = mean, fun.min = function(z_score_ungrouped_skew) mean(z_score_ungrouped_skew) - sd(z_score_ungrouped_skew), fun.max = function(z_score_ungrouped_skew) mean(z_score_ungrouped_skew) + sd(z_score_ungrouped_skew))"

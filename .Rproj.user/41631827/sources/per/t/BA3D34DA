@@ -1,0 +1,32 @@
+{
+    "id": "BA3D34DA",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1615256563910.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "expression": "Raw_Fricatives",
+        "caption": "Raw_Fricatives",
+        "totalObservations": "20",
+        "displayedObservations": "20",
+        "variables": "5",
+        "cacheKey": "1B2CCE1A",
+        "object": "Raw_Fricatives",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=Raw_Fricatives&cache_key=1B2CCE1A&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 7311138193232785247,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1615256563910,
+    "read_only": false,
+    "read_only_alternatives": []
+}

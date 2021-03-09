@@ -1,0 +1,39 @@
+---
+title: "Programming Assignment 4"
+subtitle: "⚔<br/>with xaringan"
+author: "Kyle Parrish"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+## PA4 
+
+--
+
+- This was an awesome assignment to tie everything together.
+
+--
+
+- This presentation will show you my experience of this PA. But first...
+
+--
+
+- you will look at a picture of my dogs. 
+
+--
+
+- This is unavoidable. 
+
+---
+
+Olive, Kevin, and Phyllis. 
+![Majestic animals](assets/img/dawgs.jpg)
+
+---
+

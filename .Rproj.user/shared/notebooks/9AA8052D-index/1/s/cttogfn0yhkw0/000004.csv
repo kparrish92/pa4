@@ -1,0 +1,13 @@
+"0",""
+"0","fricatives <- read_csv(""../data_raw/fricatives.csv"")"
+"2","
+[36m--[39m [1m[1mColumn specification[1m[22m [36m-----------------------------------------------------------------------------------------------[39m
+cols(
+  obs = [32mcol_double()[39m,
+  s_cog = [32mcol_double()[39m,
+  s_skewness = [32mcol_double()[39m,
+  sh_cog = [32mcol_double()[39m,
+  sh_skewness = [32mcol_double()[39m
+)
+
+"

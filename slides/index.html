@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Programming Assignment 4</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kyle Parrish" />
+    <meta name="date" content="2021-03-08" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Programming Assignment 4
+## ⚔<br/>with xaringan
+### Kyle Parrish
+### 2021-03-08
+
+---
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+  font-size: 20px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 24px;
+}
+.huge .remark-code { /*Change made here*/
+  font-size: 200% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+
+
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+# PA4 
+
+--
+
+- This was an awesome assignment to tie everything together.
+
+--
+
+- This presentation will show you my experience of this PA. But first...
+
+--
+
+- You will look at a picture of my dogs. 
+
+--
+
+- This is **unavoidable.** 
+
+---
+
+# Olive, Kevin, and Phyllis. 
+![Majestic animals](assets/img/dawgs.jpg)
+
+
+---
+
+# Now we get started 
+
+Here is the general layout of this presentation. 
+
+--
+
+(1) Pondering how to tidy
+
+--
+
+(2) Descriptive statistics 
+
+--
+
+(3) Plots 
+
+--
+
+(4) Modeling 
+
+--
+
+(5) Checking Model Assumptions
+
+--
+
+(6) Written Summary 
+
+---
+
+# Pondering how to tidy 
+
+I am using the function `skewness` to see if this vector's data is skewed. A value between -0.5 and -1 suggest that it is moderately skewed, meaning that it does not follow a normal distribution. Joseph was being tricky.
+
+
+```
+## [1] -0.6797831
+```
+
+```
+## [1] 0.3664972
+```
+
+```
+## [1] -0.5837995
+```
+
+```
+## [1] 0.509716
+```
+
+---
+
+# Pondering how to tidy 
+
+But why might the data be skewed? Time to check out the data and see if this skewness actually matters.  
+
+---
+
+# Pondering how to tidy 
+
+First, we will eye-ball it. It looks like there is a linear relationship here, but there is at least a single point that might be an influential data point. 
+
+![](index_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+
+
+# Descriptive Statistics 
+
+Here are some descriptive stats - after tidying, a dataframe showing the means and standard deviations of COG and skewness for /s/ and /ʃ/ was created. I saved the output of the tidy file and descriptive table under the `data_tidy` folder. 
+
+
+|phoneme |measure  |     mean|      sd|
+|:-------|:--------|--------:|-------:|
+|s       |cog      | 5690.524| 913.254|
+|s       |skewness |   -0.771|   0.283|
+|sh      |cog      | 3994.823| 697.092|
+|sh      |skewness |    0.553|   0.441|
+---
+
+# Plots 
+
+Here is the box plot in all its beauty. 
+
+![](index_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+# Plots
+
+Here is the other plot.
+
+![](index_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+---
+
+# Modeling
+
+Now, I turn to modeling. This model is a bivariate regression which examines center of gravity as a function of skewness for the [s] segments.
+
+Hey, it looks like skewness is a predictor of cog (p = 7.69e-10), and explains quite a bit of variance (Multiple R-squared:  0.8836,	Adjusted R-squared:  0.8771). 
+
+.tiny[
+
+```
+## 
+## Call:
+## lm(formula = fricatives_s$cog ~ fricatives_s$skewness)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1060.74   -21.72    58.96   123.00   405.24 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)             8027.2      212.3   37.80  &lt; 2e-16 ***
+## fricatives_s$skewness   3029.1      259.1   11.69 7.69e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 320.1 on 18 degrees of freedom
+## Multiple R-squared:  0.8836,	Adjusted R-squared:  0.8771 
+## F-statistic: 136.6 on 1 and 18 DF,  p-value: 7.691e-10
+```
+]
+---
+
+# Modeling
+
+But... the residuals are suspicious. The mean of the residuals was `mean_model1`, and ought to be close to zero.
+
+.tiny[
+
+]
+
+---
+
+# Modeling 
+--
+
+Oh no... the model does not satisfy the assumptions of the linear model! 
+
+--
+
+The `gvlma` function in R reveals that 5 assumptions of the linear model are **not** satisfied. 
+
+.tiny[
+
+```
+## 
+## Call:
+## lm(formula = fricatives_s$cog ~ fricatives_s$skewness)
+## 
+## Coefficients:
+##           (Intercept)  fricatives_s$skewness  
+##                  8027                   3029  
+## 
+## 
+## ASSESSMENT OF THE LINEAR MODEL ASSUMPTIONS
+## USING THE GLOBAL TEST ON 4 DEGREES-OF-FREEDOM:
+## Level of Significance =  0.05 
+## 
+## Call:
+##  gvlma::gvlma(x = model) 
+## 
+##                     Value   p-value                   Decision
+## Global Stat        54.192 4.797e-11 Assumptions NOT satisfied!
+## Skewness           16.450 4.995e-05 Assumptions NOT satisfied!
+## Kurtosis           22.496 2.106e-06 Assumptions NOT satisfied!
+## Link Function       8.949 2.777e-03 Assumptions NOT satisfied!
+## Heteroscedasticity  6.298 1.209e-02 Assumptions NOT satisfied!
+```
+]
+
+---
+
+# Modeling 
+
+That point that I was suspicious of might be to blame. 
+
+--
+
+Looking at Cook's Distance might let us know whether individual data points have high **leverage**.
+
+--
+
+The higher the leverage, the more one data point influences the regression line relative to other data points. 
+
+--
+
+---
+
+# Modeling 
+
+--
+
+Looking at this graph of the leverage of each observation in this study suggests that there is not only one, but two influential data points, observations 1 and 20. 
+
+--
+
+![](index_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+
+# Checking Model Assumptions
+
+The residuals do not check out. Data point 20 is causing trouble everywhere. 
+
+![](index_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+
+# Assumptions 
+
+.tiny[
+![](index_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+]
+---
+
+.tiny[
+
+```
+## 
+## Call:
+## lm(formula = fricatives_s2$cog ~ fricatives_s2$skewness)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -234.359  -83.766   -3.425   65.884  307.475 
+## 
+## Coefficients:
+##                        Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)              8030.8      109.7   73.19  &lt; 2e-16 ***
+## fricatives_s2$skewness   2919.5      134.8   21.66 2.78e-13 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 128.6 on 16 degrees of freedom
+## Multiple R-squared:  0.967,	Adjusted R-squared:  0.965 
+## F-statistic: 469.4 on 1 and 16 DF,  p-value: 2.779e-13
+```
+]
+---
+
+# Modeling
+
+--
+
+Now that we have a new model, let's look at the mean of the residuals again.
+
+--
+
+The mean of the residuals was `mean_model2`, and ought to be close to zero. 
+
+--
+
+That's pretty close to zero!
+
+.tiny[
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;&amp;nbsp;&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;fricatives s$cog&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;fricatives s 2$cog&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;Predictors&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;Estimates&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;CI&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;p&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;Estimates&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;CI&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7"&gt;p&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;(Intercept)&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;8027.24&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;7581.14&amp;nbsp;&amp;ndash;&amp;nbsp;8473.33&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;8030.84&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;7798.22&amp;nbsp;&amp;ndash;&amp;nbsp;8263.46&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"&gt;&lt;strong&gt;&amp;lt;0.001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;fricatives_s$skewness&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;3029.10&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;2484.67&amp;nbsp;&amp;ndash;&amp;nbsp;3573.53&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;fricatives_s2$skewness&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;2919.52&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;2633.85&amp;nbsp;&amp;ndash;&amp;nbsp;3205.20&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"&gt;&lt;strong&gt;&amp;lt;0.001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;Observations&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;20&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;0.884 / 0.877&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;0.967 / 0.965&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;/table&gt;
+]
+---
+
+# Checking Model Assumptions
+
+These look much better than last time. 
+
+![](index_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+---
+
+# Modeling 
+
+Let's see whether the model assumptions are now satisfied...
+
+--
+
+All 5 assumptions are now satisfied! 
+
+.tiny[
+
+```
+## 
+## Call:
+## lm(formula = fricatives_s2$cog ~ fricatives_s2$skewness)
+## 
+## Coefficients:
+##            (Intercept)  fricatives_s2$skewness  
+##                   8031                    2920  
+## 
+## 
+## ASSESSMENT OF THE LINEAR MODEL ASSUMPTIONS
+## USING THE GLOBAL TEST ON 4 DEGREES-OF-FREEDOM:
+## Level of Significance =  0.05 
+## 
+## Call:
+##  gvlma::gvlma(x = model2) 
+## 
+##                    Value p-value                Decision
+## Global Stat        3.843  0.4276 Assumptions acceptable.
+## Skewness           1.015  0.3137 Assumptions acceptable.
+## Kurtosis           0.252  0.6157 Assumptions acceptable.
+## Link Function      1.073  0.3003 Assumptions acceptable.
+## Heteroscedasticity 1.504  0.2201 Assumptions acceptable.
+```
+]
+---
+
+
+
+![](index_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+---
+
+.tiny[
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  fricatives_s$skewness and model$residuals
+## t = -1.2832e-15, df = 18, p-value = 1
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.4425208  0.4425208
+## sample estimates:
+##           cor 
+## -3.024595e-16
+```
+
+```
+## 
+## 	Pearson's product-moment correlation
+## 
+## data:  fricatives_s2$skewness and model2$residuals
+## t = -2.181e-16, df = 16, p-value = 1
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.4668701  0.4668701
+## sample estimates:
+##           cor 
+## -5.452431e-17
+```
+]
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

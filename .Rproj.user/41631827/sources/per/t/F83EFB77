@@ -1,0 +1,32 @@
+{
+    "id": "F83EFB77",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1615256569620.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "expression": "Tidy_Fricatives",
+        "caption": "Tidy_Fricatives",
+        "totalObservations": "40",
+        "displayedObservations": "40",
+        "variables": "4",
+        "cacheKey": "B13B4E8A",
+        "object": "Tidy_Fricatives",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=Tidy_Fricatives&cache_key=B13B4E8A&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 7311138193232785247,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1615256569620,
+    "read_only": false,
+    "read_only_alternatives": []
+}
