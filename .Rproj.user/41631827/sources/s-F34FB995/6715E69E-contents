@@ -1,0 +1,2 @@
+pivot_longer(c(`s_cog`, `s_skewness`,`sh_cog`, `sh_skewness`), names_to = "type", values_to = "value") %>% 
+  

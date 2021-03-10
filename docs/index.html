@@ -4,18 +4,16 @@
     <title>Programming Assignment 4</title>
     <meta charset="utf-8" />
     <meta name="author" content="Kyle Parrish" />
-    <meta name="date" content="2021-03-09" />
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="assets/remark-css-0.0.1/rutgers.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
 # Programming Assignment 4
-## ⚔<br/>with xaringan
+## Program
 ### Kyle Parrish
-### 2021-03-09
+### Rutgers University</br>Spring 2021</br>Last update: 2021-03-09
 
 ---
 
@@ -76,7 +74,7 @@ class: center, middle, inverse, title-slide
 
 # Now we get started 
 
-Here is the general layout of this presentation. 
+Here is the general layout of this presentation in 6 total parts.  
 
 --
 
@@ -174,7 +172,57 @@ Here is the other plot.
 
 Now, I turn to modeling. This model is a bivariate regression which examines center of gravity as a function of skewness for the [s] segments.
 
-Hey, it looks like skewness is a predictor of cog (p = 7.69e-10), and explains quite a bit of variance (Multiple R-squared:  0.8836,	Adjusted R-squared:  0.8771). 
+Hey, it looks like skewness is a significant predictor of cog `p = 7.69e-10`, and explains quite a bit of variance (`Multiple R-squared:  0.8836`,	`Adjusted R-squared:  0.8771`). 
+
+.tiny[
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;&amp;nbsp;&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;fricatives s$cog&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;Predictors&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;Estimates&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;CI&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;p&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;(Intercept)&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;8027.24&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;7581.14&amp;nbsp;&amp;ndash;&amp;nbsp;8473.33&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;fricatives_s$skewness&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;3029.10&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;2484.67&amp;nbsp;&amp;ndash;&amp;nbsp;3573.53&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;Observations&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;20&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;0.884 / 0.877&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;/table&gt;
+]
+---
+
+# Modeling
+
+
+
+The **mean** of the residuals was `1.136591e-14` - this is close to 0, so it checks out.
+
+--
+
+But... other parts of the residuals are suspicious.
+
+--
+However, the **quantiles** and **median** are cause for concern, being that 1Q is `-21.72` and 3Q is `123` - these should be similar absolute values. Likewise, the median is `58.96` - it should also be around 0. Somethings afoot. 
 
 .tiny[
 
@@ -199,26 +247,19 @@ Hey, it looks like skewness is a predictor of cog (p = 7.69e-10), and explains q
 ## F-statistic: 136.6 on 1 and 18 DF,  p-value: 7.691e-10
 ```
 ]
----
-
-# Modeling
-
-But... the residuals are suspicious. The mean of the residuals was `mean_model1`, and ought to be close to zero.
-
-.tiny[
-
-]
 
 ---
 
 # Modeling 
---
-
-Oh no... the model does not satisfy the assumptions of the linear model! 
 
 --
 
-The `gvlma` function in R reveals that 5 assumptions of the linear model are **not** satisfied. 
+Let's see if the `gvlma` functions says that the assumptions of the linear model are satisfied..
+
+
+--
+
+Dang! The `gvlma` function in R reveals that 5 assumptions of the linear model are **not** satisfied. 
 
 .tiny[
 
@@ -252,7 +293,11 @@ The `gvlma` function in R reveals that 5 assumptions of the linear model are **n
 
 # Modeling 
 
-That point that I was suspicious of might be to blame. 
+What could be the problem? Why does this model hate me?
+
+--
+
+That point that I thought was suspicious of might be to blame. 
 
 --
 
@@ -270,55 +315,108 @@ The higher the leverage, the more one data point influences the regression line 
 
 --
 
-Looking at this graph of the leverage of each observation in this study suggests that there is not only one, but two influential data points, observations 1 and 20. 
+Looking at this graph of the leverage of each observation in this study suggests that there is not only one, but **two influential data points**, observations 1 and 20. 
 
 --
-
-![](index_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
-
----
-
-# Checking Model Assumptions
-
-The residuals do not check out. Data point 20 is causing trouble everywhere. 
 
 ![](index_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 
 ---
 
-# Assumptions 
+# Checking Model Assumptions
 
-.tiny[
+--
+
+Let's check the other model assumptions and see how much trouble these two observations are causing. 
+
+--
+
+The residuals do not check out. Data point 20 is causing trouble everywhere. That rascal. 
+
 ![](index_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
-]
+
 ---
+
+# Checking Model Assumptions
+
+The predictor variable and the residuals are not correlated, so that's one less problem. 
 
 .tiny[
 
 ```
 ## 
-## Call:
-## lm(formula = fricatives_s2$cog ~ fricatives_s2$skewness)
+## 	Pearson's product-moment correlation
 ## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -234.359  -83.766   -3.425   65.884  307.475 
-## 
-## Coefficients:
-##                        Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)              8030.8      109.7   73.19  &lt; 2e-16 ***
-## fricatives_s2$skewness   2919.5      134.8   21.66 2.78e-13 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 128.6 on 16 degrees of freedom
-## Multiple R-squared:  0.967,	Adjusted R-squared:  0.965 
-## F-statistic: 469.4 on 1 and 16 DF,  p-value: 2.779e-13
+## data:  fricatives_s$skewness and model$residuals
+## t = -1.2832e-15, df = 18, p-value = 1
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.4425208  0.4425208
+## sample estimates:
+##           cor 
+## -3.024595e-16
 ```
+]
+
+---
+
+# Checking Model Assumptions
+
+The observations are also not autocorrelated. Neat.
+
+![](index_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+---
+
+
+# Checking Model Assumptions 
+
+Let's see if these influential data points are the cause - removing observations `1` and `20` from the data frame and re-checking the residuals. 
+
+--
+
+`Model2` looks pretty good... it also shows that skewness is a significant predictor of COG for [s]
+
+--
+
+
+.tiny[
+&lt;table style="border-collapse:collapse; border:none;"&gt;
+&lt;tr&gt;
+&lt;th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; "&gt;&amp;nbsp;&lt;/th&gt;
+&lt;th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; "&gt;fricatives s 2$cog&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; "&gt;Predictors&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;Estimates&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;CI&lt;/td&gt;
+&lt;td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  "&gt;p&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;(Intercept)&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;8030.84&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;7798.22&amp;nbsp;&amp;ndash;&amp;nbsp;8263.46&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; "&gt;fricatives_s2$skewness&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;2919.52&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;2633.85&amp;nbsp;&amp;ndash;&amp;nbsp;3205.20&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "&gt;&lt;strong&gt;&amp;lt;0.001&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;"&gt;Observations&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3"&gt;18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;"&gt;R&lt;sup&gt;2&lt;/sup&gt; / R&lt;sup&gt;2&lt;/sup&gt; adjusted&lt;/td&gt;
+&lt;td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3"&gt;0.967 / 0.965&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;/table&gt;
 ]
 ---
 
-# Modeling
+# Checking Model Assumptions 
 
 --
 
@@ -326,11 +424,17 @@ Now that we have a new model, let's look at the mean of the residuals again.
 
 --
 
-The mean of the residuals was `mean_model2`, and ought to be close to zero. 
+The mean of the residuals was `6.810524e-15` and is close to zero, as it should be. 
 
 --
 
 That's pretty close to zero!
+
+---
+
+# Checking Model Assumptions 
+
+Here is a summary of boths model together
 
 .tiny[
 &lt;table style="border-collapse:collapse; border:none;"&gt;
@@ -392,19 +496,21 @@ That's pretty close to zero!
 
 # Checking Model Assumptions
 
-These look much better than last time. 
+These residuals look much better than last time. 
 
-![](index_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
 ---
 
-# Modeling 
+# Checking Model Assumptions 
 
 Let's see whether the model assumptions are now satisfied...
 
 --
 
-All 5 assumptions are now satisfied! 
+All 5 assumptions are now satisfied! Observation 20 sucks.
+
+--
 
 .tiny[
 
@@ -435,53 +541,17 @@ All 5 assumptions are now satisfied!
 ]
 ---
 
+# Written Summary 
 
-
-![](index_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
----
-
-## Discussion
-
-Looks like the two models are both significant, but only one of them satisfies the model assumptions. 
-
-.tiny[
-
-```
-## 
-## 	Pearson's product-moment correlation
-## 
-## data:  fricatives_s$skewness and model$residuals
-## t = -1.2832e-15, df = 18, p-value = 1
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  -0.4425208  0.4425208
-## sample estimates:
-##           cor 
-## -3.024595e-16
-```
-
-```
-## 
-## 	Pearson's product-moment correlation
-## 
-## data:  fricatives_s2$skewness and model2$residuals
-## t = -2.181e-16, df = 16, p-value = 1
-## alternative hypothesis: true correlation is not equal to 0
-## 95 percent confidence interval:
-##  -0.4668701  0.4668701
-## sample estimates:
-##           cor 
-## -5.452431e-17
-```
-]
----
+The data was analyzed using a bivariate linear regression model in R. A total of two models were run in which the outcome variable was center of gravity for [s] segments and the predictor variable was skewness for the [s] segments. In the first model, it was found that skewness was a significant predictor of center of gravity for [s] (p = &lt;.001). However, the analysis of the residuals in the first model revealed that the model did not satisfy the assumptions of the linear model in that the data was skewed and too heteroscedastic. Upon further inspection of the residuals, two influential data points were identified and removed for the purpose of fitting a second model. It is assumed that these points were very distinct from the rest as a result of measurement error. The second model satisfied the assumptions of the linear model and retained a significant p-value (&lt;.001).
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "highlightLines": true,
-"countIncrementalSlides": false
+"countIncrementalSlides": false,
+"ratio": "16:9"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

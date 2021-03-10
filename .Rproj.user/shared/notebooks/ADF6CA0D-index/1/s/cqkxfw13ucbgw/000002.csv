@@ -1,0 +1,3 @@
+"0","fricatives_tidy %>%"
+"0","  ggplot(., aes(x = phoneme, y = cog)) + geom_boxplot(fill = ""deepskyblue3"") + xlab(""Phoneme"") + ggtitle(""COG as a function of phoneme"") + ylab(""Center of Gravity"")"
+"0",""
