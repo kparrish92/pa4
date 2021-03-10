@@ -1,0 +1,7 @@
+"0",""
+"0","fricatives_s2 = fricatives_s %>% "
+"0","  filter(obs > 1 & obs < 20)"
+"0",""
+"0","model2 = lm(cog ~ skewness, data = fricatives_s2)"
+"0",""
+"0","tab_model(model2)"
