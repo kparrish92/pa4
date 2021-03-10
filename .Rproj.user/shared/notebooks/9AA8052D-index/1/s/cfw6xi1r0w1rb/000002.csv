@@ -1,3 +1,0 @@
-"0",""
-"0","ggplot(data = fricatives, aes(x = s_cog, y = s_skewness)) + geom_point(color = ""Steelblue3"") + ggtitle(""Eye-ball it graph: is there a linear relationship bewteen skewness and COG?"") + xlab(""Center of Gravity"") + ylab(""Skewness"")"
-"0",""
