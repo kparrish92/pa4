@@ -39,6 +39,7 @@ output:
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.height = 6, fig.width = 7)
+
 ```
 
 ```{r setup, include=FALSE}
@@ -198,7 +199,7 @@ Here is the box plot in all its beauty. From this visualization, it looks like c
 
 ```{r, echo = FALSE, fig.height= 6, fig.width = 7}
 fricatives_tidy %>%
-  ggplot(., aes(x = phoneme, y = cog)) + geom_boxplot(fill = "deepskyblue3") + xlab("Phoneme") + ggtitle("COG as a function of phoneme") + ylab("Center of Gravity")
+  ggplot(., aes(x = cog, y = phoneme)) + geom_boxplot(fill = "deepskyblue3") + xlab("Phoneme") + ggtitle("COG as a function of phoneme") + ylab("Center of Gravity")
 
 ```
 

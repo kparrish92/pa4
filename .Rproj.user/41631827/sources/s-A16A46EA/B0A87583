@@ -3,19 +3,22 @@
     "path": "~/GitHub/pa4/slides/index.html",
     "project_path": "slides/index.html",
     "type": "html",
-    "hash": "3364689605",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1615397268319.0,
     "source_on_save": false,
     "relative_order": 3,
-    "properties": {},
+    "properties": {
+        "cursorPosition": "0,0",
+        "scrollLine": "0"
+    },
     "folds": "",
-    "lastKnownWriteTime": 1615397158,
+    "lastKnownWriteTime": 1615470286,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1615397158,
+    "last_content_update": 1615470286,
     "read_only": false,
     "read_only_alternatives": []
 }

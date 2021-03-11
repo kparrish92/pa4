@@ -3,7 +3,7 @@
     "path": "~/GitHub/pa4/slides/index.rmd",
     "project_path": "slides/index.rmd",
     "type": "r_markdown",
-    "hash": "2338364196",
+    "hash": "1790473384",
     "contents": "",
     "dirty": false,
     "created": 1615389291699.0,
@@ -11,16 +11,16 @@
     "relative_order": 1,
     "properties": {
         "tempName": "Untitled1",
-        "cursorPosition": "196,109",
-        "scrollLine": "196",
-        "last_setup_crc32": "6FC94EA74b732de4"
+        "cursorPosition": "201,36",
+        "scrollLine": "194",
+        "last_setup_crc32": "A16A46EA4b732de4"
     },
     "folds": "",
-    "lastKnownWriteTime": 1615397138,
+    "lastKnownWriteTime": 1615470262,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1615397138234,
+    "last_content_update": 1615470262524,
     "read_only": false,
     "read_only_alternatives": []
 }
